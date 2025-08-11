@@ -1,0 +1,109 @@
+
+/* 2112.today – Premium UI (Montserrat, glassmorphism, gradients, micro-animations) */
+/* Typography */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: local('Montserrat');
+}
+:root{
+  --radius:24px; --blur:16px; --t:300ms; --gap:16px;
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.18);
+  --shadow-md: 0 10px 30px rgba(0,0,0,.12);
+  --shadow-sm: 0 6px 16px rgba(0,0,0,.10);
+  /* Light */
+  --light-bg:#f6f7f9; --light-surface:rgba(255,255,255,.72); --light-elev:#fff;
+  --light-text:#0b1220; --light-sub:#5f6b7a; --light-accent:#0f62fe;
+  --light-chip-bg:#ffffffb3; --light-border:#e6e9ef;
+  /* Dark */
+  --dark-bg:#0a0a0a; --dark-surface:rgba(11,11,11,.72); --dark-elev:#0f0f10;
+  --dark-text:#f3f3f3; --dark-sub:#a2a7b3; --dark-accent:#d4af37;
+  --dark-chip-bg:#161616b3; --dark-border:#1f1f1f;
+}
+
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--light-bg);
+  color: var(--light-text);
+  line-height:1.45;
+}
+[data-theme="dark"] body{background:var(--dark-bg); color:var(--dark-text)}
+
+.wrap{max-width:1100px;margin:0 auto;padding:24px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
+.brand h1{margin:0;font-size:clamp(24px,5vw,40px);letter-spacing:-0.02em}
+.brand p{margin:.25rem 0 0;opacity:.85;color:var(--light-sub)}
+[data-theme="dark"] .brand p{color:var(--dark-sub)}
+
+/* Theme toggle */
+.theme-toggle{position:relative;display:inline-flex;align-items:center;border-radius:999px;padding:6px;background:var(--light-surface);backdrop-filter:blur(var(--blur));box-shadow:var(--shadow-sm);cursor:pointer;transition:all var(--t)}
+[data-theme="dark"] .theme-toggle{background:var(--dark-surface);box-shadow:var(--shadow-md)}
+.toggle-dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#fff,#ddd); transform:translateX(0);transition:transform var(--t)}
+[data-theme="dark"] .toggle-dot{background:linear-gradient(180deg,#d4af37,#a88018);transform:translateX(24px)}
+
+/* Cards & panels (glassmorphism) */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card, .panel{position:relative;border-radius:var(--radius);padding:24px;backdrop-filter:blur(var(--blur));border:1px solid var(--light-border);background:var(--light-surface);box-shadow:var(--shadow-lg)}
+[data-theme="dark"] .card, [data-theme="dark"] .panel{border-color:var(--dark-border);background:var(--dark-surface)}
+
+/* Random buttons */
+.actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;border-radius:16px;padding:14px 18px;font-weight:700;letter-spacing:.2px;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease; box-shadow:var(--shadow-sm)}
+.btn:focus{outline:2px solid transparent; outline-offset:2px}
+.btn:hover{transform:translateY(-1px) scale(1.01)}
+.btn:active{transform:translateY(0) scale(.99)}
+.btn.read{background:linear-gradient(135deg,#7db2ff,#0f62fe)}
+.btn.watch{background:linear-gradient(135deg,#ffc371,#ff5f6d)}
+.btn.listen{background:linear-gradient(135deg,#50e3c2,#11998e)}
+.btn.absurd{background:linear-gradient(135deg,#d4af37,#a88018)}
+.btn span{color:#fff}
+
+/* Tabs (chips) */
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 16px}
+.tab{appearance:none;border:1px solid var(--light-border);background:var(--light-chip-bg);padding:8px 14px;border-radius:999px;cursor:pointer;transition:all var(--t)}
+.tab.active{box-shadow:inset 0 0 0 2px var(--light-accent);}
+[data-theme="dark"] .tab{border-color:var(--dark-border);background:var(--dark-chip-bg)}
+[data-theme="dark"] .tab.active{box-shadow:inset 0 0 0 2px var(--dark-accent)}
+
+/* Entries */
+.entry{padding:16px;border-radius:18px;border:1px solid var(--light-border);background:var(--light-elev);box-shadow:var(--shadow-sm);margin-bottom:12px}
+.entry small{opacity:.7}
+[data-theme="dark"] .entry{border-color:var(--dark-border);background:var(--dark-elev)}
+
+/* Forms */
+.form{display:grid;gap:12px}
+.input, .textarea, .select{padding:12px;border-radius:14px;border:1px solid var(--light-border);background:#fff}
+[data-theme="dark"] .input, [data-theme="dark"] .textarea, [data-theme="dark"] .select{background:#0f0f10;border-color:var(--dark-border);color:var(--dark-text)}
+.submit{background:linear-gradient(135deg,#7db2ff,#0f62fe);color:#fff;border:none;border-radius:14px;padding:12px 16px;font-weight:700;cursor:pointer;transition:transform .18s ease, box-shadow .18s}
+.submit:hover{transform:translateY(-1px)}
+
+/* Sections spacing */
+section{margin:24px 0}
+.hero{margin-top:12px;display:grid;gap:16px}
+
+/* Admin layout reuse */
+.admin nav{display:flex;gap:8px;padding:12px;background:transparent;position:sticky;top:0}
+.admin nav a{color:inherit;text-decoration:none;padding:8px 12px;border-radius:999px;border:1px solid var(--light-border);background:var(--light-chip-bg)}
+.admin nav a.active{box-shadow:inset 0 0 0 2px var(--light-accent)}
+[data-theme="dark"] .admin nav a{border-color:var(--dark-border);background:var(--dark-chip-bg)}
+[data-theme="dark"] .admin nav a.active{box-shadow:inset 0 0 0 2px var(--dark-accent)}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:10px;border-bottom:1px solid var(--light-border)}
+[data-theme="dark"] .table th,[data-theme="dark"] .table td{border-color:var(--dark-border)}
+.badge,.state{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--light-border)}
+[data-theme="dark"] .badge,[data-theme="dark"] .state{border-color:var(--dark-border)}
+.state.pending{color:#ffce7a}
+.state.ok{color:#9be19b}
+/* Micro fade-in */
+.fade-in{animation:fade-in .4s ease both}
+@keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* Utility */
+.hidden{display:none}
+@media (max-width: 860px){
+  .cards{grid-template-columns:1fr}
+  .actions{grid-template-columns:1fr 1fr}
+}
