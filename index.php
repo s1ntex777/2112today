@@ -75,7 +75,6 @@ $csrf = csrf_token();
   html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    /* ZMIANA: Ustawienie nowej czcionki */
     font-family: 'Roboto Condensed', sans-serif;
     background: var(--dark-bg);
     color: var(--dark-text-primary);
@@ -94,10 +93,15 @@ $csrf = csrf_token();
     align-items: center;
     margin-bottom: 56px;
   }
-  .brand { text-align: left; }
+  .brand { 
+    text-align: center;
+    width: 100%;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .brand h1 {
     font-size: clamp(36px, 5vw, 52px);
-    /* ZMIANA: Dostosowanie grubości do nowej czcionki */
     font-weight: 400; 
     letter-spacing: -0.01em;
     margin: 0;
@@ -105,9 +109,13 @@ $csrf = csrf_token();
   .brand p {
     font-size: 18px;
     color: var(--dark-text-secondary);
-    margin: 8px 0 0;
-    max-width: 450px;
+    margin: 16px 0 0;
     font-weight: 300;
+    line-height: 1.6;
+  }
+  /* Dodatkowy styl dla akapitów, aby miały odstęp */
+  .brand p + p {
+      margin-top: 1em;
   }
   [data-theme="light"] .brand p { color: var(--light-text-secondary); }
 
@@ -122,6 +130,9 @@ $csrf = csrf_token();
     align-items: center;
     justify-content: center;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    position: absolute;
+    top: 48px;
+    right: 24px;
   }
   [data-theme="light"] .theme-toggle {
     background: var(--light-card-bg);
@@ -165,12 +176,11 @@ $csrf = csrf_token();
   [data-theme="light"] .time-card .title { color: var(--light-text-secondary); }
   .time-card .countdown {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--gap);
   }
   .time-card .value {
     font-size: clamp(36px, 6vw, 52px);
-    /* ZMIANA: Pogrubienie licznika dla lepszego kontrastu */
     font-weight: 700;
     letter-spacing: 0.01em;
     line-height: 1;
@@ -188,7 +198,7 @@ $csrf = csrf_token();
   /* Action Buttons */
   .actions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: var(--gap);
   }
   .action-btn {
@@ -223,7 +233,12 @@ $csrf = csrf_token();
   
   /* Wall of Messages Section */
   .panel { margin-top: 64px; }
-  .panel h2 { margin-top: 0; font-size: 24px; font-weight: 400; }
+  .panel h2 { 
+    margin-top: 0; 
+    font-size: 24px; 
+    font-weight: 400; 
+    text-align: center;
+  }
   
   /* Form Elements */
   textarea, input, select, .btn {
@@ -264,15 +279,40 @@ $csrf = csrf_token();
   .entry small { display: block; margin-top: 8px; opacity: 0.7; font-size: 14px; font-weight: 400;}
   
   footer { opacity: 0.6; margin-top: 48px; text-align: center; font-weight: 300; }
-  @media (max-width: 640px) { .actions { grid-template-columns: 1fr; } }
+
+  @media (max-width: 768px) {
+    .actions, .time-card .countdown {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .brand {
+        text-align: center;
+    }
+    .theme-toggle {
+    }
+  }
+  @media (max-width: 480px) {
+    .actions, .time-card .countdown {
+      gap: 12px;
+    }
+    .action-btn {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+    .action-btn .external-icon {
+        display: none;
+    }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>Time Capsule</h1>
-      <p>A digital vessel preserving thoughts, dreams, and moments until December 21, 2112</p>
+        <h1>Ocalamy to, co ma wartość</h1>
+        <p>Internet zalewają miliardy treści, które jutro przepadną bez śladu. Komisja poszukuje tych, które powinny przetrwać do 2112 roku – słów, obrazów, dźwięków i pomysłów wartych ocalenia.</p>
+        <p>Co roku, 21 grudnia, zakopujemy cyfrową kapsułę czasu – zaszyfrowane dyski i pendrive’y z zebranymi wiadomościami trafiają w ziemię w sekretnych miejscach w Polsce i na świecie. Każdy może dołożyć do niej swój fragment historii – wystarczy podzielić się tym, co warto zachować dla przyszłych pokoleń.</p>
+        <p>Komisja czuwa nad bezpieczeństwem i integralnością archiwum. Szukamy również ludzi, którzy chcieliby udostępnić kawałek swojej ziemi, by stała się strażnikiem wspomnień teraźniejszości i przeszłości.</p>
     </div>
     <button id="theme" class="theme-toggle" aria-label="Przełącz motyw">
       <svg class="icon icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
@@ -284,12 +324,13 @@ $csrf = csrf_token();
     <section class="time-card">
       <div class="title">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span>Time Remaining</span>
+        <span>Pozostało czasu</span>
       </div>
       <div id="countdown" class="countdown">
-        <div><div class="value" id="c-months">—</div><div class="label">Total Months</div></div>
-        <div><div class="value" id="c-weeks">—</div><div class="label">Total Weeks</div></div>
-        <div><div class="value" id="c-days">—</div><div class="label">Total Days</div></div>
+        <div><div class="value" id="c-years">—</div><div class="label">Lat</div></div>
+        <div><div class="value" id="c-months">—</div><div class="label">Miesięcy</div></div>
+        <div><div class="value" id="c-weeks">—</div><div class="label">Tygodni</div></div>
+        <div><div class="value" id="c-days">—</div><div class="label">Dni</div></div>
       </div>
     </section>
 
@@ -317,7 +358,7 @@ $csrf = csrf_token();
     </section>
 
     <section id="wall" class="panel">
-      <h2>Zostaw wiadomość</h2>
+      <h2>Wyślij wiadomość w przyszłość</h2>
       <form method="post">
         <input type="hidden" name="action" value="add_message">
         <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
