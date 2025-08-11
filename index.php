@@ -45,127 +45,307 @@ if (($_GET['go'] ?? '') !== '') {
 
 $csrf = csrf_token();
 ?><!doctype html>
-<html lang="pl" data-theme="light">
+<html lang="pl" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kapsuła Czasu 2112</title>
-<link rel="preconnect" href="/" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --radius:24px; --blur:16px; --t:300ms; --gap:16px;
-    --light-bg:#f6f7f9; --light-surface:#ffffffcc; --light-text:#0b1220; --light-accent:#0f62fe;
-    --dark-bg:#0a0a0a; --dark-surface:#0b0b0bcc; --dark-text:#f3f3f3; --dark-accent:#d4af37;
+  :root {
+    --radius: 16px;
+    --gap: 20px;
+    /* Light Theme */
+    --light-bg: #ffffff;
+    --light-card-bg: #f9fafb;
+    --light-border: #f3f4f6;
+    --light-text-primary: #111827;
+    --light-text-secondary: #6b7280;
+    --light-icon-color: #374151;
+    /* Dark Theme */
+    --dark-bg: #030712;
+    --dark-card-bg: #111827;
+    --dark-border: #1f2937;
+    --dark-text-primary: #f9fafb;
+    --dark-text-secondary: #9ca3af;
+    --dark-icon-color: #d1d5db;
   }
-  html{scroll-behavior:smooth}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",Segoe UI,Roboto,Ubuntu,system-ui,Arial,sans-serif; background:var(--light-bg); color:var(--light-text);}
-  [data-theme="dark"] body{background:var(--dark-bg); color:var(--dark-text)}
-  .wrap{max-width:1100px;margin:0 auto;padding:24px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0}
-  .brand h1{margin:0;font-size:clamp(24px,5vw,40px);letter-spacing:-0.02em}
-  .brand p{margin:.25rem 0 0;opacity:.8}
-  .sub a{display:inline-block;margin-top:6px;text-decoration:none}
-  .theme-toggle{position:relative;display:inline-flex;align-items:center;gap:8px;background:var(--light-surface);backdrop-filter:blur(var(--blur));border-radius:999px;padding:8px 12px;box-shadow:0 10px 30px rgba(0,0,0,.08);cursor:pointer;transition:all var(--t)}
-  [data-theme="dark"] .theme-toggle{background:var(--dark-surface);box-shadow:0 10px 30px rgba(0,0,0,.5)}
-  .toggle-dot{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#fff,#ddd); transform:translateX(0);transition:transform var(--t)}
-  [data-theme="dark"] .toggle-dot{background:linear-gradient(180deg,#d4af37,#a88018);transform:translateX(24px)}
-
-  .hero{margin-top:12px;display:grid;gap:16px}
-  .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-  .card{position:relative;border-radius:var(--radius);padding:24px;backdrop-filter:blur(var(--blur));
-        background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.65));
-        box-shadow:0 20px 40px rgba(0,0,0,.08);transition:transform .25s ease, box-shadow .25s ease}
-  .card h3{margin:0 0 8px;font-size:14px;opacity:.8;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-  .card .value{font-size:clamp(28px,6vw,54px);font-weight:700;letter-spacing:-0.02em}
-  .card:hover{transform:translateY(-4px);box-shadow:0 30px 60px rgba(0,0,0,.12)}
-  [data-theme="dark"] .card{background:linear-gradient(135deg,rgba(20,20,20,.9),rgba(20,20,20,.6));box-shadow:0 20px 50px rgba(0,0,0,.55)}
-
-  .cta{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:22px 0}
-  .btn{
-     display:inline-block;text-align:center;text-decoration:none;
-     border:none;border-radius:18px;padding:18px 18px;font-size:16px;font-weight:600;letter-spacing:.3px;cursor:pointer;
-     background:linear-gradient(180deg,#ffffff,#e9eefc); color:#0b1220; box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 14px 30px rgba(0,20,80,.12);
-     transition:transform .15s ease, box-shadow .2s ease
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    /* ZMIANA: Ustawienie nowej czcionki */
+    font-family: 'Roboto Condensed', sans-serif;
+    background: var(--dark-bg);
+    color: var(--dark-text-primary);
+    transition: background 0.3s, color 0.3s;
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(0,20,80,.18)}
-  [data-theme="dark"] .btn{background:linear-gradient(180deg,#1a1a1a,#0f0f0f); color:#f3f3f3; box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 16px 36px rgba(212,175,55,.25)}
+  [data-theme="light"] body {
+    background: var(--light-bg);
+    color: var(--light-text-primary);
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 48px 24px; }
+  
+  /* Header & Brand */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 56px;
+  }
+  .brand { text-align: left; }
+  .brand h1 {
+    font-size: clamp(36px, 5vw, 52px);
+    /* ZMIANA: Dostosowanie grubości do nowej czcionki */
+    font-weight: 400; 
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .brand p {
+    font-size: 18px;
+    color: var(--dark-text-secondary);
+    margin: 8px 0 0;
+    max-width: 450px;
+    font-weight: 300;
+  }
+  [data-theme="light"] .brand p { color: var(--light-text-secondary); }
 
-  .panel{border-radius:24px;padding:24px;backdrop-filter:blur(var(--blur));background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(255,255,255,.65));box-shadow:0 20px 40px rgba(0,0,0,.08)}
-  [data-theme="dark"] .panel{background:linear-gradient(135deg,rgba(20,20,20,.9),rgba(20,20,20,.6));box-shadow:0 20px 60px rgba(0,0,0,.55)}
-  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-  .tab{padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600;opacity:.8}
-  .tab.active{opacity:1; background:rgba(15,98,254,.12);color:#0f62fe}
-  [data-theme="dark"] .tab.active{background:rgba(212,175,55,.16);color:#d4af37}
+  /* Theme Toggle */
+  .theme-toggle {
+    border: 1px solid var(--dark-border);
+    background: var(--dark-card-bg);
+    border-radius: 999px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  [data-theme="light"] .theme-toggle {
+    background: var(--light-card-bg);
+    border-color: var(--light-border);
+  }
+  .theme-toggle .icon {
+    width: 24px;
+    height: 24px;
+    color: var(--dark-icon-color);
+  }
+  [data-theme="light"] .theme-toggle .icon { color: var(--light-icon-color); }
+  .theme-toggle .icon-sun { display: none; }
+  .theme-toggle .icon-moon { display: block; }
+  [data-theme="light"] .theme-toggle .icon-sun { display: block; }
+  [data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
-  .list{display:grid;gap:12px}
-  .entry{padding:16px;border-radius:18px;background:rgba(255,255,255,.6);backdrop-filter:blur(12px);box-shadow:0 10px 24px rgba(0,0,0,.06)}
-  [data-theme="dark"] .entry{background:rgba(20,20,20,.6);box-shadow:0 12px 30px rgba(0,0,0,.5)}
-  .entry small{opacity:.7}
-  textarea, input, select{width:100%;border-radius:14px;border:1px solid rgba(0,0,0,.08);padding:12px;background:rgba(255,255,255,.8)}
-  [data-theme="dark"] textarea,[data-theme="dark"] input,[data-theme="dark"] select{background:rgba(25,25,25,.8);border-color:rgba(255,255,255,.12);color:#fff}
-  form .row{display:grid;gap:12px}
-  @media (max-width:720px){ .cards{grid-template-columns:1fr} }
+  /* Time Remaining Card */
+  .time-card {
+    background: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+    border-radius: var(--radius);
+    padding: 24px 32px;
+    text-align: left;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 32px;
+  }
+  [data-theme="light"] .time-card {
+    background: var(--light-card-bg);
+    border-color: var(--light-border);
+  }
+  .time-card .title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--dark-text-secondary);
+    margin-bottom: 24px;
+  }
+  .time-card .title svg { width: 20px; height: 20px; }
+  [data-theme="light"] .time-card .title { color: var(--light-text-secondary); }
+  .time-card .countdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+  }
+  .time-card .value {
+    font-size: clamp(36px, 6vw, 52px);
+    /* ZMIANA: Pogrubienie licznika dla lepszego kontrastu */
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+  .time-card .label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--dark-text-secondary);
+    margin-top: 8px;
+    font-weight: 400;
+  }
+  [data-theme="light"] .time-card .label { color: var(--light-text-secondary); }
+
+  /* Action Buttons */
+  .actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap);
+  }
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+    color: var(--dark-text-primary);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    border-color: #374151;
+  }
+  [data-theme="light"] .action-btn {
+    background: var(--light-card-bg);
+    border-color: #e5e7eb;
+    color: var(--light-text-primary);
+  }
+  [data-theme="light"] .action-btn:hover { border-color: #d1d5db; }
+  .action-btn .icon { width: 28px; height: 28px; color: var(--dark-icon-color); }
+  [data-theme="light"] .action-btn .icon { color: var(--light-icon-color); }
+  .action-btn .text-content { flex-grow: 1; }
+  .action-btn .text { font-weight: 700; font-size: 16px; }
+  .action-btn .external-icon { width: 14px; height: 14px; opacity: 0.6; }
+  
+  /* Wall of Messages Section */
+  .panel { margin-top: 64px; }
+  .panel h2 { margin-top: 0; font-size: 24px; font-weight: 400; }
+  
+  /* Form Elements */
+  textarea, input, select, .btn {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #374151;
+    padding: 12px;
+    background: #1f2937;
+    font-family: inherit;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: var(--dark-text-primary);
+  }
+  [data-theme="light"] textarea, [data-theme="light"] input, [data-theme="light"] select {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: var(--light-text-primary);
+  }
+  form .row { display: grid; gap: 12px; margin: 24px 0 18px; }
+  .btn {
+    cursor: pointer;
+    background: #4f46e5; color: white;
+    font-weight: 700; border: none;
+    transition: background 0.2s;
+  }
+  .btn:hover { background: #4338ca; }
+  
+  /* Tabs & Entries */
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab { padding: 8px 14px; border-radius: 999px; cursor: pointer; font-weight: 400; opacity: 0.8; border: 1px solid transparent; }
+  .tab:hover { opacity: 1; }
+  .tab.active { opacity: 1; background: rgba(99, 102, 241, 0.2); color: #c7d2fe; }
+  [data-theme="light"] .tab.active { background: rgba(79, 70, 229, 0.1); color: #4f46e5; }
+  
+  .list { display: grid; gap: 12px; }
+  .entry { padding: 16px; border-radius: 8px; background: var(--dark-card-bg); border: 1px solid var(--dark-border); font-weight: 300; }
+  [data-theme="light"] .entry { background: var(--light-bg); border: 1px solid #e5e7eb; }
+  .entry small { display: block; margin-top: 8px; opacity: 0.7; font-size: 14px; font-weight: 400;}
+  
+  footer { opacity: 0.6; margin-top: 48px; text-align: center; font-weight: 300; }
+  @media (max-width: 640px) { .actions { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="brand">
-      <h1>Kapsuła Czasu 2112</h1>
-      <p>W świecie clickbaitów i miernych prowokacji – miejsce dla rzeczy, które mają znaczenie</p>
-      <div class="sub"><a href="#wall">Co z dzisiejszego internetu zasługuje na przetrwanie 100 lat?</a></div>
+      <h1>Time Capsule</h1>
+      <p>A digital vessel preserving thoughts, dreams, and moments until December 21, 2112</p>
     </div>
     <button id="theme" class="theme-toggle" aria-label="Przełącz motyw">
-      <span>☀️</span>
-      <div class="toggle-dot"></div>
-      <span>🌙</span>
+      <svg class="icon icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>
+      <svg class="icon icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25c0 5.385 4.365 9.75 9.75 9.75 2.572 0 4.92-.99 6.752-2.648z" /></svg>
     </button>
   </header>
 
-  <section class="hero">
-    <div class="cards" id="countdown">
-      <div class="card"><h3>Miesiące</h3><div class="value" id="c-months">—</div></div>
-      <div class="card"><h3>Tygodnie</h3><div class="value" id="c-weeks">—</div></div>
-      <div class="card"><h3>Dni</h3><div class="value" id="c-days">—</div></div>
-    </div>
-
-    <div class="cta">
-      <a class="btn" href="?go=read" target="_blank" rel="noopener noreferrer">Chcę przeczytać coś losowego</a>
-      <a class="btn" href="?go=watch" target="_blank" rel="noopener noreferrer">Chcę obejrzeć coś losowego</a>
-      <a class="btn" href="?go=listen" target="_blank" rel="noopener noreferrer">Chcę posłuchać czegoś losowego</a>
-      <a class="btn" href="?go=absurd" target="_blank" rel="noopener noreferrer">Chcę coś absurdalnego</a>
-    </div>
-  </section>
-
-  <section id="wall" class="panel">
-    <h2>Ściana Wiadomości</h2>
-    <form method="post" style="margin:12px 0 18px">
-      <input type="hidden" name="action" value="add_message">
-      <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
-      <div class="row">
-        <textarea name="content" rows="4" placeholder="Twoja wiadomość (wymagane)" required></textarea>
-        <input name="author" placeholder="Autor (opcjonalnie)">
-        <select name="category_id" required>
-          <option value="" selected disabled>Wybierz kategorię</option>
-          <?php $cats = db()->query('SELECT * FROM categories ORDER BY name')->fetchAll();
-          foreach ($cats as $c): if ($c['name']==='Wszystkie') continue; ?>
-            <option value="<?= (int)$c['id'] ?>"><?= e($c['name']) ?></option>
-          <?php endforeach; ?>
-        </select>
-        <button class="btn" type="submit">Wyślij</button>
+  <main>
+    <section class="time-card">
+      <div class="title">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>Time Remaining</span>
       </div>
-    </form>
+      <div id="countdown" class="countdown">
+        <div><div class="value" id="c-months">—</div><div class="label">Total Months</div></div>
+        <div><div class="value" id="c-weeks">—</div><div class="label">Total Weeks</div></div>
+        <div><div class="value" id="c-days">—</div><div class="label">Total Days</div></div>
+      </div>
+    </section>
 
-    <div class="tabs" id="tabs">
-      <?php foreach ($cats as $c): ?>
-        <div class="tab" data-cat="<?= e($c['name']) ?>"><?= e($c['name']) ?></div>
-      <?php endforeach; ?>
-    </div>
-    <div id="entries" class="list" aria-live="polite"></div>
-    <small style="opacity:.7">Nowe wpisy trafiają do moderacji i pojawiają się po akceptacji.</small>
-  </section>
+    <section class="actions">
+      <a class="action-btn" href="?go=read" target="_blank" rel="noopener noreferrer">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" /></svg>
+        <div class="text-content"><div class="text">Read</div></div>
+        <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-4.5 0V6.375c0-.621.504-1.125 1.125-1.125h4.25c.621 0 1.125.504 1.125 1.125V10.5m-4.5 0h4.5" /></svg>
+      </a>
+      <a class="action-btn" href="?go=watch" target="_blank" rel="noopener noreferrer">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639l4.433-7.48a1.012 1.012 0 011.636 0l4.434 7.48a1.012 1.012 0 010 .638l-4.433 7.48a1.012 1.012 0 01-1.636 0l-4.434-7.48z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        <div class="text-content"><div class="text">Watch</div></div>
+        <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-4.5 0V6.375c0-.621.504-1.125 1.125-1.125h4.25c.621 0 1.125.504 1.125 1.125V10.5m-4.5 0h4.5" /></svg>
+      </a>
+      <a class="action-btn" href="?go=listen" target="_blank" rel="noopener noreferrer">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
+        <div class="text-content"><div class="text">Listen</div></div>
+        <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-4.5 0V6.375c0-.621.504-1.125 1.125-1.125h4.25c.621 0 1.125.504 1.125 1.125V10.5m-4.5 0h4.5" /></svg>
+      </a>
+      <a class="action-btn" href="?go=absurd" target="_blank" rel="noopener noreferrer">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+        <div class="text-content"><div class="text">Absurd</div></div>
+        <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-4.5 0V6.375c0-.621.504-1.125 1.125-1.125h4.25c.621 0 1.125.504 1.125 1.125V10.5m-4.5 0h4.5" /></svg>
+      </a>
+    </section>
 
-  <footer style="opacity:.6;margin:22px 0">© <?= date('Y') ?> Kapsuła Czasu 2112</footer>
+    <section id="wall" class="panel">
+      <h2>Zostaw wiadomość</h2>
+      <form method="post">
+        <input type="hidden" name="action" value="add_message">
+        <input type="hidden" name="csrf" value="<?= e($csrf) ?>">
+        <div class="row">
+          <textarea name="content" rows="4" placeholder="Twoja wiadomość (wymagane)" required></textarea>
+          <input name="author" placeholder="Autor (opcjonalnie)">
+          <select name="category_id" required>
+            <option value="" selected disabled>Wybierz kategorię</option>
+            <?php $cats = db()->query('SELECT * FROM categories ORDER BY name')->fetchAll();
+            foreach ($cats as $c): if ($c['name']==='Wszystkie') continue; ?>
+              <option value="<?= (int)$c['id'] ?>"><?= e($c['name']) ?></option>
+            <?php endforeach; ?>
+          </select>
+          <button class="btn" type="submit">Wyślij</button>
+        </div>
+      </form>
+
+      <div class="tabs" id="tabs">
+        <?php foreach ($cats as $c): ?>
+          <div class="tab" data-cat="<?= e($c['name']) ?>"><?= e($c['name']) ?></div>
+        <?php endforeach; ?>
+      </div>
+      <div id="entries" class="list" aria-live="polite"></div>
+      <small style="opacity:.7; font-size: 14px;">Nowe wpisy trafiają do moderacji i pojawiają się po akceptacji.</small>
+    </section>
+  </main>
+  
+  <footer>© <?= date('Y') ?> Kapsuła Czasu 2112</footer>
 </div>
 <script src="/assets/app.js"></script>
 </body>
